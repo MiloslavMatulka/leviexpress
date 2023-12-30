@@ -1,16 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import './style.css';
 
+const CityOptions = ({ cities }) => {
+  return (
+    <>
+      <option value="">Choose</option>
+      {cities.map((city) =>
+        <option
+          key={city.code}
+          value={city.code}
+        >
+          {city.name}
+        </option>
+      )}
+    </>
+  );
+};
+
 export const JourneyPicker = ({ onJourneyChange }) => {
+  const [cities, setCities] = useState([]);
   const [date, setDate] = useState('');
   const [fromCity, setFromCity] = useState('');
   const [toCity, setToCity] = useState('');
 
+  useEffect(() => {
+    const fetchCities = async () => {
+      await fetch('https://apps.kodim.cz/daweb/leviexpress/api/cities')
+      .then(response => response.json())
+      .then(data => setCities(data.results));
+    };
+      
+    fetchCities();
+  }, []);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('From city: ' + fromCity +
-        ', to city: ' + toCity +
-        ', date: ' + date);
+    console.log(
+      'From: ' + fromCity +
+      '; To: ' + toCity +
+      '; Date: ' + date
+    );
   }
 
   return (
@@ -24,12 +53,7 @@ export const JourneyPicker = ({ onJourneyChange }) => {
               value={fromCity}
               onChange={(e) => setFromCity(e.target.value)}
             >
-              <option value="">Choose</option>
-              <option value="city01">City 01</option>
-              <option value="city02">City 02</option>
-              <option value="city03">City 03</option>
-              <option value="city04">City 04</option>
-              <option value="city05">City 05</option>
+              <CityOptions cities={cities}/>
             </select>
           </label>
           <label>
@@ -38,12 +62,7 @@ export const JourneyPicker = ({ onJourneyChange }) => {
               value={toCity}
               onChange={(e) => setToCity(e.target.value)}
             >
-              <option value="">Choose</option>
-              <option value="city01">City 01</option>
-              <option value="city02">City 02</option>
-              <option value="city03">City 03</option>
-              <option value="city04">City 04</option>
-              <option value="city05">City 05</option>
+              <CityOptions cities={cities} />
             </select>
           </label>
           <label>
