@@ -17,8 +17,24 @@ const CityOptions = ({ cities }) => {
   );
 };
 
+const DatesOptions = ({ dates }) => {
+  return (
+    <>
+      <option value="">Choose</option>
+      {dates.map((date) =>
+        <option
+          key={date.dateBasic}
+          value={date.dateBasic}
+        >
+          {date.dateCs}
+        </option>)}
+    </>
+  );
+};
+
 export const JourneyPicker = ({ onJourneyChange }) => {
   const [cities, setCities] = useState([]);
+  const [dates, setDates] = useState([]);
   const [date, setDate] = useState('');
   const [fromCity, setFromCity] = useState('');
   const [toCity, setToCity] = useState('');
@@ -26,19 +42,25 @@ export const JourneyPicker = ({ onJourneyChange }) => {
   useEffect(() => {
     const fetchCities = async () => {
       await fetch('https://apps.kodim.cz/daweb/leviexpress/api/cities')
-      .then(response => response.json())
-      .then(data => setCities(data.results));
+        .then(response => response.json())
+        .then(data => setCities(data.results));
     };
+    const fetchDates = async () => {
+      await fetch('https://apps.kodim.cz/daweb/leviexpress/api/dates')
+        .then(response => response.json())
+        .then(data => setDates(data.results));
+    }
       
     fetchCities();
+    fetchDates();
   }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(
       'From: ' + fromCity +
-      '; To: ' + toCity +
-      '; Date: ' + date
+      ', To: ' + toCity +
+      ', Date: ' + date
     );
   }
 
@@ -71,12 +93,7 @@ export const JourneyPicker = ({ onJourneyChange }) => {
               value={date}
               onChange={(e) => setDate(e.target.value)}
             >
-              <option value="">Vyberte</option>
-              <option value="date01">Date 01</option>
-              <option value="date02">Date 02</option>
-              <option value="date03">Date 03</option>
-              <option value="date04">Date 04</option>
-              <option value="date05">Date 05</option>
+              <DatesOptions dates={dates} />
             </select>
           </label>
           <div className="journey-picker__controls">
