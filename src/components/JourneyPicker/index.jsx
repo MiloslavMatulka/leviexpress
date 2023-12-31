@@ -57,11 +57,13 @@ export const JourneyPicker = ({ onJourneyChange }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(
-      'From: ' + fromCity +
-      ', To: ' + toCity +
-      ', Date: ' + date
-    );
+    const fetchConnection = async () => {
+      await fetch(`https://apps.kodim.cz/daweb/leviexpress/api/journey?fromCity=${fromCity}&toCity=${toCity}&date=${date}`)
+        .then(response => response.json())
+        .then(data => onJourneyChange(data.results));
+    }
+
+    fetchConnection();
   }
 
   return (
@@ -100,6 +102,10 @@ export const JourneyPicker = ({ onJourneyChange }) => {
             <button 
               className="btn" 
               type="submit"
+              disabled={date == '' || fromCity == '' || toCity == ''
+                ? true
+                : false
+              }
             > 
               Find connection
             </button>

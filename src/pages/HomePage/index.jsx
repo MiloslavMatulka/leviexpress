@@ -1,9 +1,19 @@
+import { useState } from 'react';
+
 import { JourneyPicker } from '../../components/JourneyPicker';
 
 export const HomePage = () => {
+  const [journey, setJourney] = useState(null);
+
+  const handleJourneyChange = (journey) => {
+    setJourney(journey);
+    console.log(journey);
+  }
+
   return (
     <main>
-      <JourneyPicker />
+      <JourneyPicker onJourneyChange={handleJourneyChange} />
+      {journey ? <p>Found connection ID {journey.journeyId}</p> : null}
     </main>
   );
 };
