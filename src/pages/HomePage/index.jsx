@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { JourneyDetail } from '../../components/JourneyDetail';
 import { JourneyPicker } from '../../components/JourneyPicker';
 
 export const HomePage = () => {
@@ -13,7 +14,12 @@ export const HomePage = () => {
   return (
     <main>
       <JourneyPicker onJourneyChange={handleJourneyChange} />
-      {journey ? <p>Found connection ID {journey.journeyId}</p> : null}
+      {journey ? (
+        <>
+          {/* <p>Found connection ID {journey.journeyId}</p> */}
+          <JourneyDetail journey={journey} />
+        </>
+      ) : null}
     </main>
   );
 };

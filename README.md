@@ -1,3 +1,3 @@
 # LeviExpress
 
-Základ cvičného projektu LeviExpress
+LeviExpress training project
