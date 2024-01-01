@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { JourneyDetail } from '../../components/JourneyDetail';
 import { JourneyPicker } from '../../components/JourneyPicker';
@@ -6,11 +7,40 @@ import { SelectedSeat } from '../../components/SelectedSeat';
 
 export const HomePage = () => {
   const [journey, setJourney] = useState(null);
+  const navigate = useNavigate();
+  const [reservation, setReservation] = useState(null);
+
+  useEffect(() => {
+    reservation ? console.log(reservation.reservationId) : null;
+    reservation
+      ? navigate(`/reservation/${reservation.reservationId}`)
+      : null;
+  }, [reservation]);
+
+  const handleBuy = () => {
+    console.log('Booking a ticket');
+    const fetchReservation = async () => {
+      await fetch('https://apps.kodim.cz/daweb/leviexpress/api/reservation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'create',
+          seat: journey.autoSeat,
+          journeyId: journey.journeyId,
+        }),
+      }).then(response => response.json())
+        .then (data => setReservation(data.results));
+    };
+
+    fetchReservation();
+  };
 
   const handleJourneyChange = (journey) => {
     setJourney(journey);
     console.log(journey);
-  }
+  };
 
   return (
     <main>
@@ -20,6 +50,15 @@ export const HomePage = () => {
           {/* <p>Found connection ID {journey.journeyId}</p> */}
           <JourneyDetail journey={journey} />
           <SelectedSeat number={journey.autoSeat} />
+          <div className="controls container">
+            <button
+              className="btn btn--big"
+              type="button"
+              onClick={handleBuy}
+            >
+              Book
+            </button>
+          </div>
         </>
       ) : null}
     </main>
