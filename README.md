@@ -1,3 +1,3 @@
 # LeviExpress
 
-LeviExpress training project
+LeviExpress React training project
