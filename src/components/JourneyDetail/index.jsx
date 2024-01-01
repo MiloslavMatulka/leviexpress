@@ -1,4 +1,4 @@
-import {BusStop} from '../BusStop/index';
+import {BusStop} from '../BusStop';
 import './style.css';
 
 export const JourneyDetail = ({journey}) => {
