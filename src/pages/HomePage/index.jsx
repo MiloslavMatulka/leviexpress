@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { JourneyDetail } from '../../components/JourneyDetail';
 import { JourneyPicker } from '../../components/JourneyPicker';
-import { SelectedSeat } from '../../components/SelectedSeat';
+import { SeatPicker } from '../../components/SeatPicker';
 
 export const HomePage = () => {
   const [journey, setJourney] = useState(null);
@@ -49,7 +49,7 @@ export const HomePage = () => {
         <>
           {/* <p>Found connection ID {journey.journeyId}</p> */}
           <JourneyDetail journey={journey} />
-          <SelectedSeat number={journey.autoSeat} />
+          <SeatPicker seats={journey.seats} />
           <div className="controls container">
             <button
               className="btn btn--big"
