@@ -9,6 +9,7 @@ export const HomePage = () => {
   const [journey, setJourney] = useState(null);
   const navigate = useNavigate();
   const [reservation, setReservation] = useState(null);
+  const [userSeat, setUserSeat] = useState(null);
 
   useEffect(() => {
     reservation ? console.log(reservation.reservationId) : null;
@@ -27,7 +28,7 @@ export const HomePage = () => {
         },
         body: JSON.stringify({
           action: 'create',
-          seat: journey.autoSeat,
+          seat: userSeat,
           journeyId: journey.journeyId,
         }),
       }).then(response => response.json())
@@ -40,6 +41,7 @@ export const HomePage = () => {
   const handleJourneyChange = (journey) => {
     setJourney(journey);
     console.log(journey);
+    setUserSeat(journey.autoSeat);
   };
 
   return (
@@ -51,7 +53,8 @@ export const HomePage = () => {
           <JourneyDetail journey={journey} />
           <SeatPicker
             seats={journey.seats}
-            selectedSeat={journey.autoSeat}
+            selectedSeat={userSeat}
+            onSeatSelected={setUserSeat}
           />
           <div className="controls container">
             <button

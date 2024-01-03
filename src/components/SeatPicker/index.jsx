@@ -1,7 +1,7 @@
 import {SeatRow} from '../SeatRow';
 import './style.css';
 
-export const SeatPicker = ({seats, selectedSeat}) => {
+export const SeatPicker = ({seats, selectedSeat, onSeatSelected}) => {
   return (
     <div className="seat-picker container">
       <h2>Choose a seat</h2>
@@ -12,6 +12,7 @@ export const SeatPicker = ({seats, selectedSeat}) => {
               key={index}
               row={row}
               rowSelectedSeat={selectedSeat}
+              onSeatSelected={onSeatSelected}
             />
           );
         })}
